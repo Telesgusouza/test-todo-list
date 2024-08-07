@@ -28,26 +28,34 @@ function SingUp() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        setWrongFirstName(false);
+        if (wrongFirstName) {
+            setWrongFirstName(false);
+        }
     }, [firstName])
 
     useEffect(() => {
-        setWrongLastName(false);
+        if (wrongLastName) {
+            setWrongLastName(false);
+        }
     }, [lastName])
-    
+
     useEffect(() => {
-        setWrongEmail(false);
+        if (wrongEmail) {
+            setWrongEmail(false);
+        }
     }, [email])
 
     useEffect(() => {
-        setWrongPassword(false);
+        if (wrongPassword) {
+            setWrongPassword(false);
+        }
     }, [password])
 
-    function handleSubmit (e: React.FormEvent<HTMLFormElement>)  {
+    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
         const re = /^[a-zA-Z0-9_.±]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/;
-        
+
         setWrongFirstName(firstName.length <= 3);
         setWrongLastName(firstName.length <= 3);
 
@@ -55,7 +63,7 @@ function SingUp() {
         setWrongPassword(password.length < 6);
 
         if (
-            firstName.length <= 3 
+            firstName.length <= 3
             && firstName.length <= 3
             && !re.test(email)
             && password.length < 6
@@ -63,7 +71,7 @@ function SingUp() {
             if (!re.test(email) && password.length < 6) {
                 const confirmNavigate = confirm("Incorrect data, would you like to proceed to home?");
                 console.log("prosseguir > " + confirmNavigate)
-    
+
                 if (confirmNavigate) {
                     navigate("/home", { replace: true });
                 }

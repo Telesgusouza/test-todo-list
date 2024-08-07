@@ -25,15 +25,15 @@ function SignIn() {
     const defaultTheme = createTheme();
 
     useEffect(() => {
-
-        setWrongEmail(false);
-
+        if (wrongEmail) {
+            setWrongEmail(false);
+        }
     }, [email]);
 
     useEffect(() => {
-
-        setWrongPassword(false);
-
+        if (wrongPassword) {
+            setWrongPassword(false);
+        }
     }, [password]);
 
     function handleSubmit(e: ChangeEvent<HTMLFormElement>) {
@@ -50,7 +50,7 @@ function SignIn() {
 
             if (confirmNavigate) {
                 navigate("/home", { replace: true });
-            } 
+            }
         } else {
             navigate("/home", { replace: true });
         }

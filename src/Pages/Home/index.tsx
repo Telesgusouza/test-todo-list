@@ -16,7 +16,7 @@ function Home() {
 
     return (
         <>
-            <FormTask open={toggleAdd} close={close} option={true} />
+            <FormTask open={toggleAdd} close={close} option={false} />
 
             <ThemeProvider theme={defaultTheme}>
                 <Container component="main" maxWidth="xs">
@@ -53,9 +53,7 @@ function Home() {
 
 
                         <List sx={{
-                            width: '100%', maxWidth: 360,
-                            // bgcolor: 'background.paper'
-                            // bgcolor: '#e2e2e22f' 
+                            width: '100%', maxWidth: 360, 
                             bgcolor: '#c0c0c029'
                         }}>
                             {[0, 1, 2, 3].map((value) => {
