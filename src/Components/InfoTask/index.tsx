@@ -1,4 +1,4 @@
-import { Box, Fab, Grid, makeStyles, Modal, Typography } from "@mui/material";
+import { Box, Fab, Modal, Typography } from "@mui/material";
 import { IPropsInfoTask } from "../../Config/interface";
 
 import imgPen from '../../assets/pen.svg';
@@ -20,17 +20,12 @@ function InfoTask({ close, open, task, openEdit }: IPropsInfoTask) {
             aria-describedby="modal-modal-description"
         >
             <Box sx={styleInfoTask}>
-                <Grid container spacing={0}>
 
-                    <Grid item xs={12} sm={1} sx={{ backgroundColor: "blue" }} >
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} >
                         <Typography id="modal-modal-title" variant="h6" component="h2">
                             {task?.title} 
                         </Typography>
-                    </Grid>
-
-                    <Grid item xs={12} sm={2}
-                        sx={{ backgroundColor: "red" }}
-                    >
+                    
                         <Fab
                             color="primary"
                             aria-label="edit"
@@ -38,6 +33,8 @@ function InfoTask({ close, open, task, openEdit }: IPropsInfoTask) {
                                 width: 38,
                                 height: 38,
                                 backgroundColor: '#90e3ff',
+
+                                marginLeft: 10,
 
                                 '&:hover': {
                                     backgroundColor: '#f0f8ff',
@@ -48,15 +45,13 @@ function InfoTask({ close, open, task, openEdit }: IPropsInfoTask) {
                         >
                             <img src={imgPen} alt="pen icon" style={{ width: 15 }} />
                         </Fab>
-                    </Grid>
+                    </Box>
 
-                    <Grid item xs={12} sm={12}>
                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                             {task?.description}
                         </Typography>
-                    </Grid>
+                    
 
-                </Grid>
             </Box>
         </Modal>
     );

@@ -13,7 +13,7 @@ function FormTask({ open, close, option, task }: IPropsFormTask) {
     const [wrongTitle, setWrongTitle] = useState<boolean>(false);
     const [wrongDescription, setWrongDescription] = useState<boolean>(false);
 
-    const [openSnackBar, setOpenSnackBar] = useState<ISnackBar>({open: false, message: ""});
+    const [openSnackBar, setOpenSnackBar] = useState<ISnackBar>({ open: false, message: "" });
 
     useEffect(() => {
 
@@ -39,7 +39,6 @@ function FormTask({ open, close, option, task }: IPropsFormTask) {
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-
 
         // checks if the fields have been filled in
         setWrongTitle(title.length <= 2);
@@ -108,11 +107,27 @@ function FormTask({ open, close, option, task }: IPropsFormTask) {
             setTitle("");
             setDescription("");
             setColor("");
-    
+
             close();
         }, 700);
 
         setOpenSnackBar({ open: true, message: message });
+    }
+
+    function handleDeleteTask() {
+        const conf = confirm("Do you really want to delete task");
+        let jsonListTask = conf ? localStorage.getItem("list_tasks") : "";
+
+        if (conf && jsonListTask && task?.id != null) {
+
+            const listTask: ITask[] = JSON.parse(jsonListTask);
+            listTask.splice(task.id, 1);
+
+            jsonListTask = JSON.stringify(listTask);
+            localStorage.setItem("list_tasks", jsonListTask);
+
+            close();
+        }
     }
 
     return (
@@ -191,6 +206,12 @@ function FormTask({ open, close, option, task }: IPropsFormTask) {
 
                                 </div>
 
+                            </Grid>
+
+                            <Grid item xs={12} sm={12}>
+                                <Button variant="outlined" color="error" onClick={handleDeleteTask} >
+                                    Delete task
+                                </Button>
                             </Grid>
                         </Grid>
 
