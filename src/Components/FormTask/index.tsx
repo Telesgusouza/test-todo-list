@@ -1,7 +1,7 @@
 import { Box, Button, Grid, Modal, Snackbar, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { styleBoxModal, styleInputColor } from "./style";
-import { IPropsFormTask, ITask } from "../../Config/interface";
+import { IPropsFormTask, ISnackBar, ITask } from "../../Config/interface";
 
 
 
@@ -13,11 +13,14 @@ function FormTask({ open, close, option, task }: IPropsFormTask) {
     const [color, setColor] = useState<string>("");
 
     const [wrongTitle, setWrongTitle] = useState<boolean>(false);
+    const [wrongDescription, setWrongDescription] = useState<boolean>(false);
 
-    const [openSnackBar, setOpenSnackBar] = useState<boolean>(false);
+    const [openSnackBar, setOpenSnackBar] = useState<ISnackBar>({open: false, message: ""});
 
     useEffect(() => {
+
         if (!option && task !== undefined) {
+
             setTitle(task.title);
             setDescription(task.description);
             setColor(task.color);
@@ -30,38 +33,89 @@ function FormTask({ open, close, option, task }: IPropsFormTask) {
         }
     }, [title])
 
+    useEffect(() => {
+        if (wrongDescription) {
+            setWrongDescription(false);
+        }
+    }, [description])
+
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
-        if (title.length <= 2) {
-            setWrongTitle(true);
-            return;
-        }
+
+        // checks if the fields have been filled in
+        setWrongTitle(title.length <= 2);
+        setWrongDescription(description.length <= 1);
+        if (title.length <= 2 || description.length <= 1) return;
+
+        // handle submit for Add and Edit
+        (option) ? handleAddTask() : handleEditask();
+    }
+
+    function handleAddTask() {
+        const listTaskJson = localStorage.getItem("list_tasks");
+        const listTask = listTaskJson ? JSON.parse(listTaskJson) : [];
 
         const data: ITask = {
             title: title,
             description: description,
             color: color.length === 0 ? '#c0c0c029' : color,
+            check: false,
         }
-
-        const listTaskJson = localStorage.getItem("list_tasks");
-        const listTask = listTaskJson ? JSON.parse(listTaskJson) : [];
 
         listTask.push(data);
 
         const listTaskSerializeble = JSON.stringify(listTask);
         localStorage.setItem("list_tasks", listTaskSerializeble);
 
-        setTimeout(() => {
-            close();
-        }, 700);
-
-        setOpenSnackBar(true);
+        endOfSubmit("message added successfully");
 
     }
 
+    function handleEditask() {
+
+        if (task && task.id != null) {
+
+            const listTaskJson = localStorage.getItem("list_tasks");
+
+            const data: ITask = {
+                title: title,
+                description: description,
+                color: color.length === 0 ? '#c0c0c029' : color,
+                check: task.check,
+            }
+
+            if (!listTaskJson) {
+                setOpenSnackBar({ open: true, message: "You have no tasks" });
+                return;
+            }
+
+
+            const listTask: ITask[] = JSON.parse(listTaskJson);
+            listTask.splice(task.id, 1, data);
+
+            const jsonListTask = JSON.stringify(listTask);
+            localStorage.setItem("list_tasks", jsonListTask);
+
+            endOfSubmit("edited successfully");
+        }
+    }
+
     function closeSnackBar() {
-        setOpenSnackBar(false);
+        setOpenSnackBar({ open: false, message: "" });
+    }
+
+    function endOfSubmit(message: string) {
+
+        setTimeout(() => {
+            setTitle("");
+            setDescription("");
+            setColor("");
+    
+            close();
+        }, 700);
+
+        setOpenSnackBar({ open: true, message: message });
     }
 
     return (
@@ -80,7 +134,7 @@ function FormTask({ open, close, option, task }: IPropsFormTask) {
                     }}
                 >
 
-                    <h2 id="parent-modal-title">{ option ? "Add a new Task" : "Edit your task"}</h2>
+                    <h2 id="parent-modal-title">{option ? "Add a new Task" : "Edit your task"}</h2>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={12}>
@@ -92,7 +146,7 @@ function FormTask({ open, close, option, task }: IPropsFormTask) {
                                     required
                                     fullWidth
                                     id="title"
-                                    label="Title" 
+                                    label="Title"
                                     autoFocus
 
                                     value={title}
@@ -107,12 +161,14 @@ function FormTask({ open, close, option, task }: IPropsFormTask) {
                                     rows={5}
                                     placeholder="Decription"
 
+                                    error={wrongDescription}
+
                                     autoComplete="given-name"
                                     name={"descripton"}
                                     required
                                     fullWidth
                                     id="descripton"
-                                    label="Description" 
+                                    label="Description"
                                     autoFocus
 
                                     value={description}
@@ -157,11 +213,11 @@ function FormTask({ open, close, option, task }: IPropsFormTask) {
             </Modal>
 
             <Snackbar
-                    open={openSnackBar}
-                    autoHideDuration={8000}
-                    onClose={closeSnackBar}
-                    message="message added successfully"
-                />
+                open={openSnackBar.open}
+                autoHideDuration={8000}
+                onClose={closeSnackBar}
+                message={openSnackBar.message}
+            />
         </>
     )
 }
