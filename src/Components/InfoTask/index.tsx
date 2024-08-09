@@ -4,7 +4,6 @@ import { IPropsInfoTask } from "../../Config/interface";
 import imgPen from '../../assets/pen.svg';
 import { styleInfoTask } from "./style";
 
-
 function InfoTask({ close, open, task, openEdit }: IPropsInfoTask) {
 
     function handlOpenEdit() {
@@ -23,14 +22,14 @@ function InfoTask({ close, open, task, openEdit }: IPropsInfoTask) {
             <Box sx={styleInfoTask}>
                 <Grid container spacing={0}>
 
-                    <Grid item xs={12} sm={1}                     sx={{ backgroundColor: "blue" }} >
+                    <Grid item xs={12} sm={1} sx={{ backgroundColor: "blue" }} >
                         <Typography id="modal-modal-title" variant="h6" component="h2">
-                            {task?.title}
+                            {task?.title} 
                         </Typography>
                     </Grid>
 
-                    <Grid item xs={12} sm={2} 
-                    sx={{ backgroundColor: "red" }}
+                    <Grid item xs={12} sm={2}
+                        sx={{ backgroundColor: "red" }}
                     >
                         <Fab
                             color="primary"

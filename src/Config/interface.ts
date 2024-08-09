@@ -30,3 +30,9 @@ export interface IMoreInfoTask {
     openModal: boolean;
     index: number;
 }
+
+export interface IToggleModal {
+    open: boolean;
+    option: boolean;
+    task?: ITask;
+}

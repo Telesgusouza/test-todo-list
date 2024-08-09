@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import { styleBoxModal, styleInputColor } from "./style";
 import { IPropsFormTask, ISnackBar, ITask } from "../../Config/interface";
 
-
-
 // When true Add false to Edit
 function FormTask({ open, close, option, task }: IPropsFormTask) {
 
@@ -89,7 +87,6 @@ function FormTask({ open, close, option, task }: IPropsFormTask) {
                 setOpenSnackBar({ open: true, message: "You have no tasks" });
                 return;
             }
-
 
             const listTask: ITask[] = JSON.parse(listTaskJson);
             listTask.splice(task.id, 1, data);

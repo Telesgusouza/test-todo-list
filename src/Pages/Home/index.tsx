@@ -3,16 +3,10 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import { useEffect, useState } from "react";
 import FormTask from "../../Components/FormTask";
-import { IMoreInfoTask, ITask } from "../../Config/interface";
+import { IMoreInfoTask, ITask, IToggleModal } from "../../Config/interface";
 
 import imgThreeDots from '../../assets/threeDots.svg';
 import InfoTask from "../../Components/InfoTask";
-
-interface IToggleModal {
-    open: boolean;
-    option: boolean;
-    task?: ITask;
-}
 
 function Home() {
     const [toggleModal, setToggleModal] = useState<IToggleModal>({
@@ -76,10 +70,10 @@ function Home() {
             listTask.splice(index, 1, obj);
 
             jsonListTask = JSON.stringify(listTask);
-            localStorage.setItem(jsonListTask, "list_tasks");
+            localStorage.setItem("list_tasks", jsonListTask);
 
+            close();
         }
-
 
     }
 
