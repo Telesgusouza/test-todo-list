@@ -208,11 +208,15 @@ function FormTask({ open, close, option, task }: IPropsFormTask) {
 
                             </Grid>
 
-                            <Grid item xs={12} sm={12}>
-                                <Button variant="outlined" color="error" onClick={handleDeleteTask} >
-                                    Delete task
-                                </Button>
-                            </Grid>
+                            {!option && (
+                                <Grid item xs={12} sm={12}>
+                                    <Button variant="outlined" color="error" onClick={handleDeleteTask} >
+                                        Delete task
+                                    </Button>
+                                </Grid>
+                            )}
+
+
                         </Grid>
 
                         <Button
